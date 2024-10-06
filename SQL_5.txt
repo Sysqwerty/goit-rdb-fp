@@ -1,0 +1,26 @@
+5. Побудуйте власну функцію.
+
+Створіть і використайте функцію, що будує такий же атрибут, як і в попередньому завданні: функція має приймати на вхід значення року, а повертати різницю в роках між поточною датою та датою, створеною з атрибута року (1996 рік → '1996-01-01').
+
+DELIMITER //
+
+DROP FUNCTION IF EXISTS get_years_diff;
+CREATE FUNCTION get_years_diff(year INT)
+RETURNS INT
+DETERMINISTIC 
+NO SQL
+BEGIN
+    DECLARE first_of_january DATE;
+    DECLARE years_diff INT;
+    DECLARE now_date DATE;
+    SET now_date = CURDATE();
+    SET first_of_january = MAKEDATE(year, 1);
+    SET years_diff = TIMESTAMPDIFF(YEAR, first_of_january, now_date);
+    RETURN years_diff;
+END //
+
+DELIMITER ;
+
+Приклад використання функції:
+
+SELECT get_years_diff(1996) => 28

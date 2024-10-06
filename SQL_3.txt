@@ -1,0 +1,19 @@
+3. Проаналізуйте дані:
+
+- для кожної унікальної комбінації Entity та Code або їх id порахуйте середнє, мінімальне, максимальне значення та суму для атрибута Number_rabies.
+- результат відсортуйте за порахованим середнім значенням у порядку спадання.
+- оберіть тільки 10 рядків для виведення на екран.
+
+SELECT 
+    country_id,
+    AVG(Number_rabies) AVG,
+    MIN(Number_rabies) MIN,
+    MAX(Number_rabies) MAX,
+    SUM(Number_rabies) SUM
+FROM
+    infections
+WHERE
+    Number_rabies IS NOT NULL
+GROUP BY country_id
+ORDER BY AVG DESC
+LIMIT 10

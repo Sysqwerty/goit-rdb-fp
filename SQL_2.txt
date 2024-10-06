@@ -1,0 +1,71 @@
+2. Нормалізуйте таблицю infectious_cases до 3ї нормальної форми. Збережіть у цій же схемі дві таблиці з нормалізованими даними.
+
+створимо нову таблицю country для зберігання country name та code
+
+create table country
+(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(45),
+    code VARCHAR(10)
+)
+
+insert into country
+(name, code)
+(
+select distinct Entity, Code
+from infectious_cases
+)
+
+скопіюємо в таблицю country унікальні пари записів (Entity, Code) в таблицю country з оригінальної таблиці infectious_cases
+
+insert into country
+(name, code)
+select distinct Entity, Code from infectious_cases
+
+створимо нову таблицю infections для зберігання кількості інфекціоних випадків
+
+CREATE TABLE infections (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    country_id INT,
+    FOREIGN KEY (country_id) REFERENCES country(id),
+    Year YEAR,
+    Number_yaws INT,
+    polio_cases INT,
+    cases_guinea_worm INT,
+    Number_rabies DOUBLE,
+    Number_malaria DOUBLE,
+    Number_hiv DOUBLE,
+    Number_tuberculosis DOUBLE,
+    Number_smallpox INT,
+    Number_cholera_cases INT
+)
+
+скопіюємо дані в таблицю infections з оригінальної таблиці infectious_cases
+
+insert into infections
+(
+country_id,
+Year,
+Number_yaws,
+polio_cases,
+cases_guinea_worm,
+Number_rabies,
+Number_malaria,
+Number_hiv,
+Number_tuberculosis,
+Number_smallpox,
+Number_cholera_cases
+)
+select 
+(select id from country where country.name = infectious_cases.Entity),
+Year,
+Number_yaws,
+polio_cases,
+cases_guinea_worm,
+Number_rabies,
+Number_malaria,
+Number_hiv,
+Number_tuberculosis,
+Number_smallpox,
+Number_cholera_cases
+from infectious_cases

@@ -1,0 +1,26 @@
+4. Побудуйте колонку різниці в роках.
+
+Для оригінальної або нормованої таблиці для колонки Year побудуйте з використанням вбудованих SQL-функцій:
+- атрибут, що створює дату першого січня відповідного року,
+
+ALTER TABLE infections
+ADD COLUMN first_of_january DATE;
+
+UPDATE infections
+SET first_of_january = MAKEDATE(Year, 1);
+
+- атрибут, що дорівнює поточній даті,
+
+ALTER TABLE infections
+ADD COLUMN now_date DATE;
+
+UPDATE infections
+SET now_date = CURDATE();
+
+- атрибут, що дорівнює різниці в роках двох вищезгаданих колонок.
+
+ALTER TABLE infections
+ADD COLUMN years_diff INT;
+
+UPDATE infections 
+SET years_diff = TIMESTAMPDIFF(YEAR, first_of_january, now_date);
